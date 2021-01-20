@@ -84,7 +84,7 @@ module.exports = {
 
     if (countOffer > MAX_COUNT) {
       console.info(chalk.red(`Не больше 1000 объявлений`));
-      process.exit(ExitCode.SUCCESS);
+      return;
     }
 
     const content = JSON.stringify(generateOffers(countOffer), null, 2);
@@ -94,6 +94,7 @@ module.exports = {
       console.log(chalk.green(`Operation success. File created.`));
     } catch (err) {
       console.error(chalk.red(`Can't write data to file...`));
+      process.exit(ExitCode.ERROR);
     }
   }
 };
