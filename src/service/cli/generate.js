@@ -1,15 +1,18 @@
 'use strict';
 
+const {nanoid} = require(`nanoid`);
 const fs = require(`fs`).promises;
 const chalk = require(`chalk`);
 const {getRandomInt, shuffle} = require(`../../utils`);
-const {ExitCode, FILE_NAME} = require(`../../constants`);
+const {ExitCode, FILE_NAME, MAX_ID_LENGTH} = require(`../../constants`);
 
 const DEFAULT_COUNT = 1;
 const MAX_COUNT = 1000;
+const MAX_COMMENTS = 4;
 const FILE_SENTENCES_PATH = `./data/sentences.txt`;
 const FILE_TITLES_PATH = `./data/titles.txt`;
 const FILE_CATEGORIES_PATH = `./data/categories.txt`;
+const FILE_COMMENTS_PATH = `./data/comments.txt`;
 
 const OfferType = {
   OFFER: `offer`,
@@ -36,16 +39,27 @@ const readContent = async (filePath) => {
   }
 };
 
-const getPictureFileName = (number) => number > 10 ? `item${number}.jpg` : `item0${number}.jpg`;
+const getPictureFileName = (number) => `item${number.toString().padStart(2, `0`)}.jpg`;
 
-const generateOffers = (count, titles, categories, sentences) => {
+const generateComments = (count, comments) => (
+  Array(count).fill({}).map(() => ({
+    id: nanoid(MAX_ID_LENGTH),
+    text: shuffle(comments)
+      .slice(0, getRandomInt(1, comments.length))
+      .join(` `),
+  }))
+);
+
+const generateOffers = (count, titles, categories, sentences, comments) => {
   return Array(count).fill({}).map(() => ({
+    id: nanoid(MAX_ID_LENGTH),
     type: Object.values(OfferType)[Math.floor(Math.random() * Object.keys(OfferType).length)],
     title: titles[getRandomInt(0, titles.length - 1)],
     description: shuffle(sentences).slice(0, getRandomInt(1, 5)).join(` `),
     sum: getRandomInt(SumRestrict.MIN, SumRestrict.MAX),
     picture: getPictureFileName(getRandomInt(PictureRestrict.MIN, PictureRestrict.MAX)),
     category: shuffle(categories).slice(0, getRandomInt(1, 2)),
+    comments: generateComments(getRandomInt(1, MAX_COMMENTS), comments),
   }));
 };
 
@@ -55,6 +69,7 @@ module.exports = {
     const sentences = await readContent(FILE_SENTENCES_PATH);
     const titles = await readContent(FILE_TITLES_PATH);
     const categories = await readContent(FILE_CATEGORIES_PATH);
+    const comments = await readContent(FILE_COMMENTS_PATH);
 
     const [count] = args;
     const countOffer = Number.parseInt(count, 10) || DEFAULT_COUNT;
@@ -64,7 +79,7 @@ module.exports = {
       return;
     }
 
-    const content = JSON.stringify(generateOffers(countOffer, titles, categories, sentences), null, 2);
+    const content = JSON.stringify(generateOffers(countOffer, titles, categories, sentences, comments), null, 2);
 
     try {
       await fs.writeFile(FILE_NAME, content);
