@@ -3,7 +3,8 @@
 const {Router} = require(`express`);
 const offer = require(`../api/offer`);
 const category = require(`../api/category`);
-const {OfferService, CommentService, CategoryService} = require(`../data-service`);
+const search = require(`../api/search`);
+const {OfferService, CommentService, CategoryService, SearchService} = require(`../data-service`);
 const getMockData = require(`../lib/get-mock-data`);
 
 const app = new Router();
@@ -13,6 +14,7 @@ const app = new Router();
 
   offer(app, new OfferService(mockData), new CommentService());
   category(app, new CategoryService(mockData));
+  search(app, new SearchService(mockData));
 })();
 
 module.exports = app;
