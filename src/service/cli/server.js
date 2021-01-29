@@ -2,8 +2,8 @@
 
 const express = require(`express`);
 const chalk = require(`chalk`);
-const offersRouter = require(`../routes/offers-routes`);
-const {HttpCode, ExitCode} = require(`../../constants`);
+const {HttpCode, ExitCode, API_PREFIX} = require(`../../constants`);
+const routes = require(`../api`);
 
 module.exports = {
   name: `--server`,
@@ -12,7 +12,7 @@ module.exports = {
     const app = express();
 
     app.use(express.json());
-    app.use(`/offers`, offersRouter);
+    app.use(API_PREFIX, routes);
     app.use((req, res) => res.status(HttpCode.NOT_FOUND).send(`Not found`));
 
     const [customPort] = args;
