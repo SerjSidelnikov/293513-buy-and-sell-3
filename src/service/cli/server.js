@@ -4,15 +4,17 @@ const express = require(`express`);
 const chalk = require(`chalk`);
 const {HttpCode, ExitCode, API_PREFIX} = require(`../../constants`);
 const routes = require(`../api`);
+const getMockData = require(`../lib/get-mock-data`);
 
 module.exports = {
   name: `--server`,
-  run(args) {
+  async run(args) {
     const DEFAULT_PORT = 3000;
     const app = express();
+    const mockData = await getMockData();
 
     app.use(express.json());
-    app.use(API_PREFIX, routes);
+    app.use(API_PREFIX, routes(mockData));
     app.use((req, res) => res.status(HttpCode.NOT_FOUND).send(`Not found`));
 
     const [customPort] = args;
