@@ -15,7 +15,6 @@ module.exports = {
     const logger = getLogger({name: `api`});
 
     app.use(express.json());
-    app.use(API_PREFIX, routes(mockData));
 
     app.use((req, res, next) => {
       logger.debug(`Request on route ${req.url}`);
@@ -26,6 +25,8 @@ module.exports = {
 
       next();
     });
+
+    app.use(API_PREFIX, routes(mockData));
 
     app.use((req, res) => {
       res.status(HttpCode.NOT_FOUND).send(`Not found`);
