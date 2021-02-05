@@ -114,10 +114,10 @@ const createAPI = () => {
 };
 
 describe(`API returns a list of all offers`, () => {
-  const app = createAPI();
   let response;
 
   beforeAll(async () => {
+    const app = createAPI();
     response = await request(app).get(`/offers`);
   });
 
@@ -127,10 +127,10 @@ describe(`API returns a list of all offers`, () => {
 });
 
 describe(`API returns an offer with given id`, () => {
-  const app = createAPI();
   let response;
 
   beforeAll(async () => {
+    const app = createAPI();
     response = await request(app).get(`/offers/qovgoG`);
   });
 
@@ -150,10 +150,11 @@ describe(`API creates an offer if data is valid`, () => {
     sum: 100500
   };
 
-  const app = createAPI();
+  let app;
   let response;
 
   beforeAll(async () => {
+    app = createAPI();
     response = await request(app).post(`/offers`).send(newOffer);
   });
 
@@ -198,10 +199,11 @@ describe(`API changes existent offer`, () => {
     sum: 100500
   };
 
-  const app = createAPI();
+  let app;
   let response;
 
   beforeAll(async () => {
+    app = createAPI();
     response = await request(app).put(`/offers/qovgoG`).send(newOffer);
   });
 
@@ -245,10 +247,11 @@ test(`API returns status 400 when trying to change an offer with invalid data`, 
 });
 
 describe(`API correctly deletes an offer`, () => {
-  const app = createAPI();
+  let app;
   let response;
 
   beforeAll(async () => {
+    app = createAPI();
     response = await request(app).delete(`/offers/qovgoG`);
   });
 
@@ -265,10 +268,10 @@ test(`API returns to delete non-existent offer`, async () => {
 });
 
 describe(`API returns a list of comments to given offer`, () => {
-  const app = createAPI();
   let response;
 
   beforeAll(async () => {
+    const app = createAPI();
     response = await request(app).get(`/offers/d0bYzE/comments`);
   });
 
@@ -282,10 +285,11 @@ describe(`API creates a comment if data is valid`, () => {
     text: `Валидному комментарию достаточно этого поля`
   };
 
-  const app = createAPI();
+  let app;
   let response;
 
   beforeAll(async () => {
+    app = createAPI();
     response = await request(app).post(`/offers/d0bYzE/comments`).send(newComment);
   });
 
@@ -313,10 +317,11 @@ test(`API refuses to create a comment when data is invalid, and returns status c
 });
 
 describe(`API correctly deletes a comment`, () => {
-  const app = createAPI();
+  let app;
   let response;
 
   beforeAll(async () => {
+    app = createAPI();
     response = await request(app).delete(`/offers/d0bYzE/comments/HrVhSh`);
   });
 
