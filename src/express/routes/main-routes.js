@@ -2,13 +2,14 @@
 
 const {Router} = require(`express`);
 const api = require(`../api`).getAPI();
+const asyncMiddleware = require(`../middleware/async-middleware`);
 
 const mainRouter = new Router();
 
-mainRouter.get(`/`, async (req, res) => {
+mainRouter.get(`/`, asyncMiddleware(async (req, res) => {
   const offers = await api.getOffers();
   res.render(`main`, {offers});
-});
+}));
 
 mainRouter.get(`/register`, (req, res) => res.render(`sign-up`));
 mainRouter.get(`/login`, (req, res) => res.render(`login`));

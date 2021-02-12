@@ -7,12 +7,14 @@ const mainRoutes = require(`./routes/main-routes`);
 const myRoutes = require(`./routes/my-routes`);
 const offersRoutes = require(`./routes/offers-routes`);
 const {HttpCode} = require(`../constants`);
+const {getLogger} = require(`../service/lib/logger`);
 
 const PORT = process.env.PORT || 8080;
 const PUBLIC_DIR = `public`;
 const UPLOAD_DIR = `upload`;
 
 const app = express();
+const logger = getLogger({name: `server`});
 
 app.use(express.static(path.resolve(__dirname, PUBLIC_DIR)));
 app.use(express.static(path.resolve(__dirname, UPLOAD_DIR)));
@@ -26,7 +28,14 @@ app.use(`/offers`, offersRoutes);
 
 app.use((req, res) => res.status(HttpCode.BAD_REQUEST).render(`errors/404`));
 app.use((err, req, res, _next) => {
+  logger.error(`An error occurred on processing request: ${err.message}`);
   res.status(HttpCode.INTERNAL_SERVER_ERROR).render(`errors/500`);
 });
 
-app.listen(PORT, () => console.log(`Server is running on the port ${PORT}`));
+app.listen(PORT, (err) => {
+  if (err) {
+    return logger.error(`An error occurred on server created ${err.message}`);
+  }
+
+  return logger.info(`Listening to connection on ${PORT}`);
+});
