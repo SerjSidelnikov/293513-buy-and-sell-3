@@ -45,7 +45,7 @@ const generateOffers = (count, titles, categoryCount, userCount, sentences, comm
     sum: getRandomInt(SumRestrict.MIN, SumRestrict.MAX),
     picture: getPictureFileName(getRandomInt(PictureRestrict.MIN, PictureRestrict.MAX)),
     category: [getRandomInt(1, categoryCount)],
-    comments: generateComments(getRandomInt(1, MAX_COMMENTS), index + 1, userCount, comments),
+    comments: generateComments(getRandomInt(2, MAX_COMMENTS), index + 1, userCount, comments),
   }));
 };
 
