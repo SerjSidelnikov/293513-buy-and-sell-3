@@ -5,14 +5,10 @@ const chalk = require(`chalk`);
 const {getRandomInt, shuffle} = require(`../../utils`);
 const {
   ExitCode,
-  FILE_NAME_FILL_DB,
-  DEFAULT_COUNT_OFFER,
-  MAX_COUNT_OFFER,
+  FileName,
+  CountOffer,
   MAX_COMMENTS,
-  FILE_SENTENCES_PATH,
-  FILE_TITLES_PATH,
-  FILE_CATEGORIES_PATH,
-  FILE_COMMENTS_PATH,
+  FilePath,
   OfferType,
   SumRestrict,
   PictureRestrict,
@@ -56,10 +52,10 @@ const generateOffers = (count, titles, categoryCount, userCount, sentences, comm
 module.exports = {
   name: `--fill`,
   async run(args) {
-    const sentences = await readContent(FILE_SENTENCES_PATH);
-    const titles = await readContent(FILE_TITLES_PATH);
-    const categories = await readContent(FILE_CATEGORIES_PATH);
-    const commentSentences = await readContent(FILE_COMMENTS_PATH);
+    const sentences = await readContent(FilePath.SENTENCES);
+    const titles = await readContent(FilePath.TITLES);
+    const categories = await readContent(FilePath.CATEGORIES);
+    const commentSentences = await readContent(FilePath.COMMENTS);
 
     const users = [
       {
@@ -79,9 +75,9 @@ module.exports = {
     ];
 
     const [count] = args;
-    const countOffer = Number.parseInt(count, 10) || DEFAULT_COUNT_OFFER;
+    const countOffer = Number.parseInt(count, 10) || CountOffer.DEFAULT;
 
-    if (countOffer > MAX_COUNT_OFFER) {
+    if (countOffer > CountOffer.MAX) {
       console.info(chalk.red(`Не больше 1000 объявлений`));
       return;
     }
@@ -132,7 +128,7 @@ ALTER TABLE offer_categories ENABLE TRIGGER ALL;
     `.trim();
 
     try {
-      await fs.writeFile(FILE_NAME_FILL_DB, content);
+      await fs.writeFile(FileName.FILL_DB, content);
       console.log(chalk.green(`Operation success. File created.`));
     } catch (err) {
       console.error(chalk.red(`Can't write data to file...`));
