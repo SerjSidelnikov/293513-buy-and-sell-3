@@ -40,8 +40,8 @@ module.exports = new Sequelize(
     port: DB_PORT,
     dialect: `postgres`,
     pool: {
-      min: DB_POOL_MIN_CONNECTION,
-      max: DB_POOL_MAX_CONNECTION,
+      min: Number(DB_POOL_MIN_CONNECTION),
+      max: Number(DB_POOL_MAX_CONNECTION),
       acquire: DB_POLL_ACQUIRE,
       idle: DB_POLL_IDLE,
     },
