@@ -1,17 +1,16 @@
 'use strict';
 
-module.exports.DEFAULT_COMMAND = `--help`;
+const DEFAULT_COMMAND = `--help`;
+const USER_ARGV_INDEX = 2;
+const MAX_ID_LENGTH = 6;
+const MAX_COMMENTS = 4;
 
-module.exports.USER_ARGV_INDEX = 2;
-module.exports.MAX_ID_LENGTH = 6;
-module.exports.MAX_COMMENTS = 4;
-
-module.exports.CountOffer = {
+const CountOffer = {
   DEFAULT: 1,
   MAX: 1000,
 };
 
-module.exports.FilePath = {
+const FilePath = {
   SENTENCES: `./data/sentences.txt`,
   TITLES: `./data/titles.txt`,
   CATEGORIES: `./data/categories.txt`,
@@ -19,17 +18,17 @@ module.exports.FilePath = {
   API_PREFIX: `/api`,
 };
 
-module.exports.FileName = {
+const FileName = {
   MOCKS: `mocks.json`,
   FILL_DB: `fill-db.sql`,
 };
 
-module.exports.ExitCode = {
+const ExitCode = {
   ERROR: 1,
   SUCCESS: 0,
 };
 
-module.exports.HttpCode = {
+const HttpCode = {
   OK: 200,
   CREATED: 201,
   NOT_FOUND: 404,
@@ -37,22 +36,38 @@ module.exports.HttpCode = {
   INTERNAL_SERVER_ERROR: 500,
 };
 
-module.exports.Env = {
+const Env = {
   DEVELOPMENT: `development`,
   PRODUCTION: `production`,
 };
 
-module.exports.OfferType = {
+const OfferType = {
   OFFER: `offer`,
   SALE: `sale`,
 };
 
-module.exports.SumRestrict = {
+const SumRestrict = {
   MIN: 1000,
   MAX: 100000,
 };
 
-module.exports.PictureRestrict = {
+const PictureRestrict = {
   MIN: 1,
   MAX: 16,
+};
+
+module.exports = {
+  DEFAULT_COMMAND,
+  USER_ARGV_INDEX,
+  MAX_ID_LENGTH,
+  MAX_COMMENTS,
+  CountOffer,
+  FilePath,
+  FileName,
+  ExitCode,
+  HttpCode,
+  Env,
+  OfferType,
+  SumRestrict,
+  PictureRestrict,
 };
